@@ -1,0 +1,97 @@
+﻿<Page x:Class="Lopatkin_Glazki.Glazki_Page"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Lopatkin_Glazki"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Glazki_Page">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Margin="10" Orientation="Horizontal" >
+                <TextBlock Text="Введите названия для поиска" TextAlignment="Right"
+                           Width="360" FontSize="15"></TextBlock>
+                <TextBox Name="TBSearch" TextChanged="TextBox_TextChanged"
+                         Width="360" FontSize="15"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="10" >
+                <TextBlock Text="Введите названия для поиска" TextAlignment="Right"
+                           Width="360" FontSize="15"></TextBlock>
+                <ComboBox Name="ComboType" SelectionChanged="ComboType_SelectionChanged"
+                          FontSize="15" Width="200">
+                    <TextBlock >Все</TextBlock>
+                    <TextBlock >От 0 до 5%</TextBlock>
+                    <TextBlock >От 5 до 15%</TextBlock>
+                    <TextBlock >От 15 до 30%</TextBlock>
+                    <TextBlock >От 30 до 70%</TextBlock>
+                    <TextBlock >От 70 до 100%</TextBlock>
+                </ComboBox>
+                <ComboBox Name="AgentType" SelectionChanged="AgentType_SelectionChanged"
+                          FontSize="15" Width="200">
+                    <TextBlock >Все</TextBlock>
+                    <TextBlock >От 0 до 5%</TextBlock>
+                    <TextBlock >От 5 до 15%</TextBlock>
+                    <TextBlock >От 15 до 30%</TextBlock>
+                    <TextBlock >От 30 до 70%</TextBlock>
+                    <TextBlock >От 70 до 100%</TextBlock>
+                </ComboBox>
+            </StackPanel>
+        </WrapPanel>
+      
+        
+        <ListView Name="GlazkiListView" Grid.Row="2">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Image Width="100" Grid.Column="0" Stretch="UniformToFill" HorizontalAlignment="Center">
+                            <Image.Source>
+                                <Binding Path="Logo">
+                                    <Binding.TargetNullValue>
+                                        <ImageSource>
+                                            Res/picture.png
+                                        </ImageSource>
+                                    </Binding.TargetNullValue>
+                                </Binding>
+                            </Image.Source>
+                        </Image>
+                        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
+                            <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" FontSize="20" Text="{Binding AgentTypeID}" TextWrapping="Wrap"></TextBlock>
+                            <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" FontSize="20" Text=" | " TextWrapping="Wrap"></TextBlock>
+                            <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" FontSize="20" Text="{Binding Title}"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="0">
+                            <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" FontSize="20" Text="{Binding ProductCount}" ></TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="1">
+                            <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Text="{Binding Phone}"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
+                            <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Text="Приоритетность: "></TextBlock>
+                            <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Text="{Binding Priority}"></TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </Grid>
+</Page>
