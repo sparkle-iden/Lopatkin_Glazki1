@@ -25,36 +25,131 @@ namespace Lopatkin_Glazki
             InitializeComponent();
             var currentGlazki = Lopatkin_GlazkiEntities.GetContext().Agent.ToList();
             GlazkiListView.ItemsSource = currentGlazki;
+            
+            
+            ObnovlenieStranicy();
+        }
+        private void ObnovlenieStranicy()
+        {
+            
+            var currentGlazki = Lopatkin_GlazkiEntities.GetContext().Agent.ToList();
+
+            currentGlazki = currentGlazki.Where(p => (p.Title.ToLower().Contains(TBSearch.Text.ToLower()))).ToList();
+
+            if (PoVozrast.IsChecked.Value)
+            {
+                if (Sortirovka.SelectedIndex == 0)
+                {
+                    currentGlazki = currentGlazki.OrderBy(p => p.Title).ToList();
+                }
+
+                if (Sortirovka.SelectedIndex == 2)
+                {
+                    currentGlazki = currentGlazki.OrderBy(p => p.Priority).ToList();
+                }
+
+                if (Filtraciya.SelectedIndex == 0)
+                {
+                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "МФО")).ToList();
+                }
+                if (Filtraciya.SelectedIndex == 1)
+                {
+                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "ЗАО")).ToList();
+                }
+                if (Filtraciya.SelectedIndex == 2)
+                {
+                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "МКК")).ToList();
+                }
+                if (Filtraciya.SelectedIndex == 3)
+                {
+                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "ОАО")).ToList();
+                }
+                if (Filtraciya.SelectedIndex == 4)
+                {
+                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "ООО")).ToList();
+                }
+                if (Filtraciya.SelectedIndex == 5)
+                {
+                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "ПАО")).ToList();
+                }
+                GlazkiListView.ItemsSource = currentGlazki;
+            }
+
+            if (PoYbovaniy.IsChecked.Value)
+            {
+                if (Sortirovka.SelectedIndex == 0)
+                {
+                    currentGlazki = currentGlazki.OrderByDescending(p => p.Title).ToList();
+                }
+
+                if (Sortirovka.SelectedIndex == 2)
+                {
+                    currentGlazki = currentGlazki.OrderByDescending(p => p.Priority).ToList();
+                }
+                if (Filtraciya.SelectedIndex == 0)
+                {
+                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "МФО")).ToList();
+                }
+                if (Filtraciya.SelectedIndex == 1)
+                {
+                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "ЗАО")).ToList();
+                }
+                if (Filtraciya.SelectedIndex == 2)
+                {
+                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "МКК")).ToList();
+                }
+                if (Filtraciya.SelectedIndex == 3)
+                {
+                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "ОАО")).ToList();
+                }
+                if (Filtraciya.SelectedIndex == 4)
+                {
+                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "ООО")).ToList();
+                }
+                if (Filtraciya.SelectedIndex == 5)
+                {
+                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "ПАО")).ToList();
+                }
+                GlazkiListView.ItemsSource = currentGlazki;
+            }
+            GlazkiListView.ItemsSource = currentGlazki;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Manager.MainFrame.Navigate(new AddEditPage());
+            ObnovlenieStranicy();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void Sortirovka_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            ObnovlenieStranicy();
         }
 
-        private void ComboType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Filtraciya_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ObnovlenieStranicy();
+        }
+  
 
+        private void TBSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ObnovlenieStranicy();
         }
 
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        private void Sortirovka_LostFocus(object sender, RoutedEventArgs e)
         {
-
+            ObnovlenieStranicy();
         }
 
-        private void RButtonDown_Checked(object sender, RoutedEventArgs e)
+        private void PoYbovaniy_Checked(object sender, RoutedEventArgs e)
         {
-
+            ObnovlenieStranicy();
         }
 
-        private void AgentType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void PoVozrast_Checked(object sender, RoutedEventArgs e)
         {
-
+            ObnovlenieStranicy();
         }
     }
 }
