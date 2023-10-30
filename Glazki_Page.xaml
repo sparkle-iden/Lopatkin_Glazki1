@@ -27,10 +27,13 @@
             <StackPanel Orientation="Horizontal" Margin="10">
                 <AdornerDecorator>
                     <ComboBox Name="Sortirovka" SelectionChanged="Sortirovka_SelectionChanged"
-                  FontSize="15" Width="140"  IsEditable="True" IsReadOnly="True" Text="Сортировка" LostFocus="Sortirovka_LostFocus" >
-                        <TextBlock >Наименование</TextBlock>
-                        <TextBlock >Размер скидки</TextBlock>
-                        <TextBlock >Приоритет</TextBlock>
+                  FontSize="15" Width="140"  IsEditable="True" IsReadOnly="True" Text="Сортировка" >
+                        <TextBlock >Наименование по возрастанию</TextBlock>
+                        <TextBlock >Наименование по убыванию</TextBlock>
+                        <TextBlock >Размер скидки по возрастанию</TextBlock>
+                        <TextBlock >Размер скидки по убыванию</TextBlock>
+                        <TextBlock >Приоритет по возрастанию</TextBlock>
+                        <TextBlock >Приоритет по убыванию</TextBlock>
                     </ComboBox>
                 </AdornerDecorator>
                 
@@ -50,10 +53,11 @@
                 </ComboBox>
             </StackPanel>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0" HorizontalAlignment="Center">
+        
+        <!--<StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0" HorizontalAlignment="Center">
             <RadioButton Name="PoVozrast" HorizontalAlignment="Center" Content="По возрастанию" GroupName="Sort" Width="200" FontSize="12" Checked="PoVozrast_Checked" ></RadioButton>
             <RadioButton Name="PoYbovaniy" HorizontalAlignment="Center" Content="По Убыванию" GroupName="Sort" Width="200" FontSize="12" Checked="PoYbovaniy_Checked"></RadioButton>
-        </StackPanel>
+        </StackPanel>-->
 
         <ListView Name="GlazkiListView" Grid.Row="3">
             <ListView.ItemTemplate>
