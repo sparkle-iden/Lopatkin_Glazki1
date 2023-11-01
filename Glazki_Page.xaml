@@ -12,8 +12,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1">
@@ -28,9 +28,12 @@
                 <AdornerDecorator>
                     <ComboBox Name="Sortirovka" SelectionChanged="Sortirovka_SelectionChanged"
                   FontSize="15" Width="140"  IsEditable="True" IsReadOnly="True" Text="Сортировка" LostFocus="Sortirovka_LostFocus" >
-                        <TextBlock >Наименование</TextBlock>
-                        <TextBlock >Размер скидки</TextBlock>
-                        <TextBlock >Приоритет</TextBlock>
+                        <TextBlock >Наименование по возрастанию</TextBlock>
+                        <TextBlock >Наименование по убыванию</TextBlock>
+                        <TextBlock >Размер скидки по возрастанию</TextBlock>
+                        <TextBlock >Размер скидки по убыванию</TextBlock>
+                        <TextBlock >Приоритет по возрастанию</TextBlock>
+                        <TextBlock >Приоритет по убыванию</TextBlock>
                     </ComboBox>
                 </AdornerDecorator>
                 
@@ -50,12 +53,9 @@
                 </ComboBox>
             </StackPanel>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0" HorizontalAlignment="Center">
-            <RadioButton Name="PoVozrast" HorizontalAlignment="Center" Content="По возрастанию" GroupName="Sort" Width="200" FontSize="12" Checked="PoVozrast_Checked" ></RadioButton>
-            <RadioButton Name="PoYbovaniy" HorizontalAlignment="Center" Content="По Убыванию" GroupName="Sort" Width="200" FontSize="12" Checked="PoYbovaniy_Checked"></RadioButton>
-        </StackPanel>
+      
 
-        <ListView Name="GlazkiListView" Grid.Row="3">
+        <ListView Name="GlazkiListView" Grid.Row="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -69,7 +69,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Image Width="100" Grid.Column="0" Stretch="UniformToFill" HorizontalAlignment="Center">
+                        <Image Width="auto" Grid.Column="0" Stretch="UniformToFill" HorizontalAlignment="Center">
                             <Image.Source>
                                 <Binding Path="Logo">
                                     <Binding.TargetNullValue>
@@ -99,6 +99,21 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Name="TBcount" FontSize="20" Height="20"></TextBlock>
+            <TextBlock Name="TBAllRecords" FontSize="20" Height="20"></TextBlock>
 
+            <Button Name="Left" Content="&lt;" Width="auto" Height="auto"
+                    Click="Left_Click"></Button>
+            <ListBox FontSize="20" Name="PageListBox" MouseUp="PageListBox_MouseUp">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"></WrapPanel>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+            <Button Name="Right" Content="&gt;" Width="auto" Height="auto"
+                    Click="Right_Click"></Button>
+        </StackPanel>
     </Grid>
 </Page>
