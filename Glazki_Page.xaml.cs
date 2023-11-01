@@ -39,9 +39,11 @@ namespace Lopatkin_Glazki
             
             var currentGlazki = Lopatkin_GlazkiEntities.GetContext().Agent.ToList();
 
-            currentGlazki = currentGlazki.Where(p => (p.Title.ToLower().Contains(TBSearch.Text.ToLower()))).ToList();
-            currentGlazki = currentGlazki.Where(p => (p.Phone.ToLower().Contains(TBSearch.Text.ToLower()))).ToList();
-            currentGlazki = currentGlazki.Where(p => (p.Email.ToLower().Contains(TBSearch.Text.ToLower()))).ToList();
+            currentGlazki = currentGlazki.Where(p =>
+                                                p.Title.ToLower().Contains(TBSearch.Text.ToLower())||
+                                                p.Email.ToLower().Contains(TBSearch.Text.ToLower())||
+                                                p.Phone.ToLower().Replace("+","").Replace("(","").Replace(")","").Replace(" ","").Replace("-","").Contains(TBSearch.Text.ToLower())).ToList();
+
 
 
             if (Sortirovka.SelectedIndex == 0)
@@ -65,27 +67,27 @@ namespace Lopatkin_Glazki
             }
             if (Filtraciya.SelectedIndex == 0)
                 {
-                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "МФО")).ToList();
+                    currentGlazki = currentGlazki.Where(p => p.AgentTypeString == "МФО").ToList();
                 }
                 if (Filtraciya.SelectedIndex == 1)
                 {
-                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "ЗАО")).ToList();
+                    currentGlazki = currentGlazki.Where(p => p.AgentTypeString == "ЗАО").ToList();
                 }
                 if (Filtraciya.SelectedIndex == 2)
                 {
-                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "МКК")).ToList();
+                    currentGlazki = currentGlazki.Where(p => p.AgentTypeString == "МКК").ToList();
                 }
                 if (Filtraciya.SelectedIndex == 3)
                 {
-                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "ОАО")).ToList();
+                    currentGlazki = currentGlazki.Where(p => p.AgentTypeString == "ОАО").ToList();
                 }
                 if (Filtraciya.SelectedIndex == 4)
                 {
-                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "ООО")).ToList();
+                    currentGlazki = currentGlazki.Where(p => p.AgentTypeString == "ООО").ToList();
                 }
                 if (Filtraciya.SelectedIndex == 5)
                 {
-                    currentGlazki = currentGlazki.Where(p => (p.AgentTypeString == "ПАО")).ToList();
+                    currentGlazki = currentGlazki.Where(p => p.AgentTypeString == "ПАО").ToList();
                 }
                 GlazkiListView.ItemsSource = currentGlazki;
             TableList = currentGlazki;
@@ -226,6 +228,12 @@ namespace Lopatkin_Glazki
         private void PageListBox_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ChangePage(0, Convert.ToInt32(PageListBox.SelectedItem.ToString())-1);
+        }
+
+        private void OpenAddEditPage_Click(object sender, RoutedEventArgs e)
+        {
+            Manager.MainFrame.Navigate(new AddEditPage());
+           
         }
     }
 }

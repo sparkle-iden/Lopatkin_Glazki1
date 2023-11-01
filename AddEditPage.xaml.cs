@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,28 @@ namespace Lopatkin_Glazki
         public AddEditPage()
         {
             InitializeComponent();
+
+
+        }
+
+        private void ChangePictureBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+            OpenFileDialog myOpenFileDialog = new OpenFileDialog();
+            if (myOpenFileDialog.ShowDialog() == true)
+            {
+                Agent.Logo = myOpenFileDialog.FileName;
+            }
+        }
+
+        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DeleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
