@@ -180,7 +180,7 @@ namespace Lopatkin_Glazki
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Manager.MainFrame.Navigate(new AddEditPage());
+            Manager.MainFrame.Navigate(new AddEditPage(null));
             ObnovlenieStranicy();
         }
 
@@ -232,7 +232,7 @@ namespace Lopatkin_Glazki
 
         private void OpenAddEditPage_Click(object sender, RoutedEventArgs e)
         {
-            Manager.MainFrame.Navigate(new AddEditPage());
+            Manager.MainFrame.Navigate(new AddEditPage(null));
            
         }
     }
