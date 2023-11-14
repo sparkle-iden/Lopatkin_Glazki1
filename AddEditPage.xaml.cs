@@ -22,12 +22,14 @@ namespace Lopatkin_Glazki
     public partial class AddEditPage : Page
     {
         private Agent _currentGlazki = new Agent();
+        List<AgentType> AgentTypesDBList = Lopatkin_GlazkiEntities.GetContext().AgentType.ToList();
         public AddEditPage(Agent selectedGlazki)
         {
             InitializeComponent();
             if (selectedGlazki != null)
             {
-                this._currentGlazki = selectedGlazki;
+                _currentGlazki = selectedGlazki;
+                ComboType.SelectedIndex = _currentGlazki.AgentTypeID-1;
             }
             DataContext = _currentGlazki;
         }
@@ -73,6 +75,18 @@ namespace Lopatkin_Glazki
             }
             if (string.IsNullOrWhiteSpace(_currentGlazki.Email))
                 errors.AppendLine("Укажите почту агента");
+
+            var currentType = (TextBlock)ComboType.SelectedItem;
+            string currentTypeContent = currentType.Text;
+            foreach(AgentType type in AgentTypesDBList)
+            {
+                if (type.Title.ToString() == currentTypeContent)
+                {
+                    _currentGlazki.AgentType= type;
+                    _currentGlazki.AgentTypeID = type.ID;
+                    break;
+                }
+            }
             if (errors.Length > 0)
             {
                 MessageBox.Show(errors.ToString());
@@ -80,23 +94,47 @@ namespace Lopatkin_Glazki
             }
             if (_currentGlazki.ID == 0)
             {
-                Lopatkin_GlazkiEntities.GetContext().Agent.Add(_currentGlazki);
-                try
-                {
-                    Lopatkin_GlazkiEntities.GetContext().SaveChanges();
-                    MessageBox.Show("информация сохранена");
-                    Manager.MainFrame.GoBack();
-                }
-                catch(Exception ex)
-                {
-                    MessageBox.Show(ex.Message.ToString());
-                }
+                Lopatkin_GlazkiEntities.GetContext().Agent.Add(_currentGlazki);  
+            }
+            try
+            {
+                Lopatkin_GlazkiEntities.GetContext().SaveChanges();
+                MessageBox.Show("информация сохранена");
+                Manager.MainFrame.GoBack();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
             }
         }
 
         private void DeleteBtn_Click(object sender, RoutedEventArgs e)
         {
+            var currentGlazki = (sender as Button).DataContext as Agent;
+            var currentGlazkkiAgent = Lopatkin_GlazkiEntities.GetContext().ProductSale.ToList();
+            currentGlazkkiAgent = currentGlazkkiAgent.Where(p => p.AgentID == currentGlazki.ID).ToList();
 
+            if (currentGlazkkiAgent.Count != 0)
+                MessageBox.Show("Невозможно удалить так как есть продажи");
+            else
+            {
+
+
+                if (MessageBox.Show("Вы точно хотите выполнить удаление?","Внимание!",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        Lopatkin_GlazkiEntities.GetContext().Agent.Remove(currentGlazki);
+                        Lopatkin_GlazkiEntities.GetContext().SaveChanges();
+                        MessageBox.Show("Запись удалена");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, ToString());
+                    }
+                }
+            }
         }
     }
 }

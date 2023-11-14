@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Lopatkin_Glazki"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Glazki_Page">
+      Title="Glazki_Page" IsVisibleChanged="Page_IsVisibleChanged">
 
     <Grid >
         <Grid.RowDefinitions>
@@ -96,7 +96,9 @@
                         <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
                             <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Text="Приоритетность: "></TextBlock>
                             <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Text="{Binding Priority}"></TextBlock>
+                            <Button Name="Redactirovanie" Content="Редактировать" Width="auto" Height="auto" Click="Redactirovanie_Click" ></Button>
                         </StackPanel>
+                        
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

@@ -40,25 +40,24 @@
             <TextBlock Text="Директор" FontSize="15" Height="20" MinWidth="120" Width="auto" Margin="5"></TextBlock>
             <TextBox Text="{Binding DirectorName}" FontSize="15" Height="20" Width="250"></TextBox>
         </StackPanel>
-        <StackPanel Grid.Column="0" Grid.Row="4" Orientation="Vertical" Grid.RowSpan="4">
+        <StackPanel Grid.Column="0" Grid.Row="5" Orientation="Vertical" Grid.RowSpan="4">
             <TextBlock Text="Логотип" FontSize="15" Height="20" Width="auto" Margin="5"></TextBlock>
-            <Image Name="LogoImage" Stretch="UniformToFill" MinHeight="50" Height="auto" Width="auto" HorizontalAlignment="Center" Margin="5">
+            <Image Name="LogoImage" Stretch="UniformToFill"  Height="50" Width="50" HorizontalAlignment="Center" Margin="5">
                 <Image.Source>
                     <Binding Path="Logo" TargetNullValue="Res\picture.png"></Binding>
                 </Image.Source>
             </Image>
         </StackPanel>
-        <Button Grid.Row="7" Content="Изменить" Name="ChangePictureBtn" Click="ChangePictureBtn_Click"></Button>
+        <Button Grid.Row="8" Content="Изменить" Name="ChangePictureBtn" Click="ChangePictureBtn_Click"></Button>
 
         <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
             <TextBlock Text="Тип агента" FontSize="15" Height="20" Width="100" Margin="5"></TextBlock>
-            <ComboBox FontSize="15" Height="25" Width="100" Name="ComboType" Text="{Binding AgentTypeID}">         
-     
-             <TextBlock Text="МФО"/>
-             <TextBlock Text="ООО"/>
+            <ComboBox FontSize="15" Height="25" Width="100" Name="ComboType" >         
              <TextBlock Text="ЗAО"/>
              <TextBlock Text="МКК"/>
+             <TextBlock Text="МФО"/>
              <TextBlock Text="OAO"/>
+             <TextBlock Text="ООО"/>
              <TextBlock Text="ПАО"/>
             </ComboBox>
          </StackPanel>

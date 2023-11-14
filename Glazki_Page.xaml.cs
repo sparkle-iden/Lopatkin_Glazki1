@@ -235,5 +235,20 @@ namespace Lopatkin_Glazki
             Manager.MainFrame.Navigate(new AddEditPage(null));
            
         }
+
+        private void Redactirovanie_Click(object sender, RoutedEventArgs e)
+        {
+            Manager.MainFrame.Navigate(new AddEditPage((sender as Button).DataContext as Agent));
+        }
+
+        private void Page_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if(Visibility==Visibility.Visible)
+            {
+                Lopatkin_GlazkiEntities.GetContext().ChangeTracker.Entries().ToList().ForEach(p => p.Reload());
+                GlazkiListView.ItemsSource = Lopatkin_GlazkiEntities.GetContext().Agent.ToList();
+            }
+            ObnovlenieStranicy();
+        }
     }
 }
