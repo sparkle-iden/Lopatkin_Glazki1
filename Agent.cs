@@ -11,7 +11,8 @@ namespace Lopatkin_Glazki
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Linq;
+
     public partial class Agent
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -43,9 +44,68 @@ namespace Lopatkin_Glazki
         public virtual ICollection<Shop> Shop { get; set; }
         public string AgentTypeString
         {
+           get
+           {
+                return AgentType.Title;
+           }
+        }
+      /*  public int NumberOfsales
+        {
             get
             {
-                return AgentType.Title;
+                int coint = 0;
+                var ProductSale = Lopatkin_GlazkiEntities.GetContext().ProductSale.ToList();
+                foreach(var el in ProductSale)
+                {
+                    if (this.ID == el.AgentID)
+                    {
+                        coint += el.ProductCount;
+                    }
+                }
+                return coint;
+            }
+        }*/
+        public decimal Discount
+        {
+            get
+            {
+                int count=0;
+                decimal res = 0;
+                var discount =Lopatkin_GlazkiEntities.GetContext().Product.ToList();
+                foreach(var el in ProductSale)
+                {
+                    if (el.AgentID == ID)
+                    {
+                        foreach(var el1 in discount)
+                        {
+                            if (el1.ID == ID)
+                            {
+                                res += el1.MinCostForAgent * el.ProductCount;
+                            }
+                        }
+                    }
+                }
+                if (res < 10000)
+                {
+                    count = 0;
+                }
+                if (res >= 10000&&res<=50000)
+                {
+                    count = 5;
+                }
+                if (res >= 50000 && res <= 150000)
+                {
+                    count = 10;
+                }
+                if (res >= 150000 && res <= 500000)
+                {
+                    count = 20;
+                }
+                if (res >500000)
+                {
+                    count = 25;
+                }
+                return count;
             }
         }
     }

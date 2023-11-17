@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,13 +26,16 @@ namespace Lopatkin_Glazki
         int CurrentPage = 0;
         List<Agent> CurrentPageList = new List<Agent>();
         List<Agent> TableList;
+      
         public Glazki_Page()
         {
             InitializeComponent();
             var currentGlazki = Lopatkin_GlazkiEntities.GetContext().Agent.ToList();
-            GlazkiListView.ItemsSource = currentGlazki;
-            
-            
+            var ProductSale= Lopatkin_GlazkiEntities.GetContext().ProductSale.ToList();
+            var combinedData =new List<object> ();
+            combinedData.AddRange(currentGlazki);
+            combinedData.AddRange(ProductSale);
+            GlazkiListView.ItemsSource = combinedData;
             ObnovlenieStranicy();
         }
         private void ObnovlenieStranicy()
@@ -177,6 +181,7 @@ namespace Lopatkin_Glazki
                 GlazkiListView.Items.Refresh();
             }
         }
+       
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -191,7 +196,7 @@ namespace Lopatkin_Glazki
 
         private void Filtraciya_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ObnovlenieStranicy();
+           ObnovlenieStranicy();
         }
   
 
@@ -207,12 +212,12 @@ namespace Lopatkin_Glazki
 
         private void PoYbovaniy_Checked(object sender, RoutedEventArgs e)
         {
-            ObnovlenieStranicy();
+           ObnovlenieStranicy();
         }
 
         private void PoVozrast_Checked(object sender, RoutedEventArgs e)
         {
-            ObnovlenieStranicy();
+           ObnovlenieStranicy();
         }
 
         private void Left_Click(object sender, RoutedEventArgs e)

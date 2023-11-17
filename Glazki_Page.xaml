@@ -56,7 +56,7 @@
             </StackPanel>
         </StackPanel>
 
-
+ 
         <ListView Name="GlazkiListView" Grid.Row="3">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -64,6 +64,8 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="50"/>
@@ -87,13 +89,17 @@
                             <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" FontSize="20" Text=" | " TextWrapping="Wrap"></TextBlock>
                             <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" FontSize="20" Text="{Binding Title}"></TextBlock>
                         </StackPanel>
-                        <StackPanel Grid.Column="1" Grid.Row="0">
-                            <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" FontSize="20" Text="{Binding ProductCount}" ></TextBlock>
+                        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                            <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" FontSize="20" Text="Продаж за год: "  TextWrapping="NoWrap"  Height="auto"></TextBlock>
+                            <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" FontSize="20" Text="{Binding ProductCount}" TextWrapping="NoWrap" ></TextBlock>
                         </StackPanel>
-                        <StackPanel Grid.Column="1" Grid.Row="1">
+                        <StackPanel Grid.Column="1" Grid.Row="2">
                             <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Text="{Binding Phone}"></TextBlock>
                         </StackPanel>
-                        <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
+                        <StackPanel Grid.Column="2" VerticalAlignment="Center" Grid.Row="1">
+                            <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Text="{Binding Discount}" VerticalAlignment="Center"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal">
                             <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Text="Приоритетность: "></TextBlock>
                             <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" FontSize="16" Text="{Binding Priority}"></TextBlock>
                             <Button Name="Redactirovanie" Content="Редактировать" Width="auto" Height="auto" Click="Redactirovanie_Click" ></Button>
