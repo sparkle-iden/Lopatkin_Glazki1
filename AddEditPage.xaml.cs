@@ -29,7 +29,7 @@ namespace Lopatkin_Glazki
             if (selectedGlazki != null)
             {
                 _currentGlazki = selectedGlazki;
-                ComboType.SelectedIndex = _currentGlazki.AgentTypeID-1;
+                ComboType.SelectedIndex = _currentGlazki.AgentTypeID - 1;
             }
             DataContext = _currentGlazki;
         }
@@ -47,67 +47,70 @@ namespace Lopatkin_Glazki
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            StringBuilder errors = new StringBuilder();
-            if (string.IsNullOrWhiteSpace(_currentGlazki.Title))
-                errors.AppendLine("Укажите названия агента");
-            if (string.IsNullOrWhiteSpace(_currentGlazki.Address))
-                errors.AppendLine("Укажите адрес");
-            if (string.IsNullOrWhiteSpace(_currentGlazki.DirectorName))
-                errors.AppendLine("Укажите директора");
-            if (ComboType.SelectedItem==null)
-                errors.AppendLine("Укажите тип агента");
-            if (string.IsNullOrWhiteSpace(_currentGlazki.Priority.ToString()))
-                errors.AppendLine("Укажите приоритет агента");
-            if (_currentGlazki.Priority<0)
-                errors.AppendLine("Укажите положительные приоритет   агента");
-            if (string.IsNullOrWhiteSpace(_currentGlazki.INN))
-                errors.AppendLine("Укажите ИНН агента");
-            if (string.IsNullOrWhiteSpace(_currentGlazki.KPP))
-                errors.AppendLine("Укажите КПП агента");
-            if (string.IsNullOrWhiteSpace(_currentGlazki.Phone))
-                errors.AppendLine("Укажите телефон агента");
-            else
-            {
-                string ph = _currentGlazki.Phone.Replace("(", "").Replace(")", "").Replace("+", "").Replace("-", "");
-                if ((ph[1] == '9' || ph[1] == '4' || ph[1] == '8') && ph.Length != 11
-                    || ph[1] == '3' && ph.Length != 12) 
-                errors.AppendLine("Укажите правильный телефон");
-            }
-            if (string.IsNullOrWhiteSpace(_currentGlazki.Email))
-                errors.AppendLine("Укажите почту агента");
+            List<string> errorsList = new List<string>();
 
-            var currentType = (TextBlock)ComboType.SelectedItem;
-            string currentTypeContent = currentType.Text;
-            foreach(AgentType type in AgentTypesDBList)
+            ValidateAndAddError(() => string.IsNullOrWhiteSpace(_currentGlazki.Title), "Укажите названия агента");
+            ValidateAndAddError(() => string.IsNullOrWhiteSpace(_currentGlazki.Address), "Укажите адрес");
+            ValidateAndAddError(() => string.IsNullOrWhiteSpace(_currentGlazki.DirectorName), "Укажите директора");
+            ValidateAndAddError(() => ComboType.SelectedItem == null, "Укажите тип агента");
+            ValidateAndAddError(() => string.IsNullOrWhiteSpace(_currentGlazki.Priority.ToString()), "Укажите приоритет агента");
+            ValidateAndAddError(() => _currentGlazki.Priority < 0, "Укажите положительный приоритет агента");
+            ValidateAndAddError(() => string.IsNullOrWhiteSpace(_currentGlazki.INN), "Укажите ИНН агента");
+            ValidateAndAddError(() => string.IsNullOrWhiteSpace(_currentGlazki.KPP), "Укажите КПП агента");
+            ValidateAndAddError(() => string.IsNullOrWhiteSpace(_currentGlazki.Phone) || !IsValidPhoneNumber(_currentGlazki.Phone), "Укажите правильный телефон");
+            ValidateAndAddError(() => string.IsNullOrWhiteSpace(_currentGlazki.Email), "Укажите почту агента");
+
+            var currentTypeContent = ((TextBlock)ComboType.SelectedItem)?.Text;
+            var selectedAgentType = AgentTypesDBList.FirstOrDefault(type => type.Title.ToString() == currentTypeContent);
+
+            if (selectedAgentType != null)
             {
-                if (type.Title.ToString() == currentTypeContent)
-                {
-                    _currentGlazki.AgentType= type;
-                    _currentGlazki.AgentTypeID = type.ID;
-                    break;
-                }
+                _currentGlazki.AgentType = selectedAgentType;
+                _currentGlazki.AgentTypeID = selectedAgentType.ID;
             }
-            if (errors.Length > 0)
+
+            if (errorsList.Count > 0)
             {
-                MessageBox.Show(errors.ToString());
+                MessageBox.Show(string.Join("\n", errorsList));
                 return;
             }
-            if (_currentGlazki.ID == 0)
+
+            SaveAgentInformation();
+
+            void ValidateAndAddError(Func<bool> condition, string errorMessage)
             {
-                Lopatkin_GlazkiEntities.GetContext().Agent.Add(_currentGlazki);  
+                if (condition.Invoke())
+                {
+                    errorsList.Add(errorMessage);
+                }
             }
-            try
+
+            bool IsValidPhoneNumber(string phoneNumber)
             {
-                Lopatkin_GlazkiEntities.GetContext().SaveChanges();
-                MessageBox.Show("информация сохранена");
-                Manager.MainFrame.GoBack();
+                string cleanedPhoneNumber = phoneNumber.Replace("(", "").Replace(")", "").Replace("+", "").Replace("-", "");
+                return (cleanedPhoneNumber[1] == '9' || cleanedPhoneNumber[1] == '4' || cleanedPhoneNumber[1] == '8') && cleanedPhoneNumber.Length == 11
+                       || cleanedPhoneNumber[1] == '3' && cleanedPhoneNumber.Length == 12;
             }
-            catch (Exception ex)
+
+            void SaveAgentInformation()
             {
-                MessageBox.Show(ex.Message.ToString());
+                if (_currentGlazki.ID == 0)
+                {
+                    Lopatkin_GlazkiEntities.GetContext().Agent.Add(_currentGlazki);
+                }
+
+                try
+                {
+                    Lopatkin_GlazkiEntities.GetContext().SaveChanges();
+                    MessageBox.Show("Информация сохранена");
+                    Manager.MainFrame.GoBack();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
-
         private void DeleteBtn_Click(object sender, RoutedEventArgs e)
         {
             var currentGlazki = (sender as Button).DataContext as Agent;
@@ -120,7 +123,7 @@ namespace Lopatkin_Glazki
             {
 
 
-                if (MessageBox.Show("Вы точно хотите выполнить удаление?","Внимание!",
+                if (MessageBox.Show("Вы точно хотите выполнить удаление?", "Внимание!",
                     MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     try
@@ -138,3 +141,5 @@ namespace Lopatkin_Glazki
         }
     }
 }
+    
+

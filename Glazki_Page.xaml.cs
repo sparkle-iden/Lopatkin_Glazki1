@@ -32,11 +32,22 @@ namespace Lopatkin_Glazki
             InitializeComponent();
             var currentGlazki = Lopatkin_GlazkiEntities.GetContext().Agent.ToList();
             var ProductSale= Lopatkin_GlazkiEntities.GetContext().ProductSale.ToList();
-            var combinedData =new List<object> ();
-            combinedData.AddRange(currentGlazki);
-            combinedData.AddRange(ProductSale);
-            GlazkiListView.ItemsSource = combinedData;
+            
+           
             ObnovlenieStranicy();
+        }
+        private string GetAgentTypeStringByIndex(int index)
+        {
+            switch (index)
+            {
+                case 0: return "МФО";
+                case 1: return "ЗАО";
+                case 2: return "МКК";
+                case 3: return "ОАО";
+                case 4: return "ООО";
+                case 5: return "ПАО";
+                default: return string.Empty;
+            }
         }
         private void ObnovlenieStranicy()
         {
@@ -50,50 +61,32 @@ namespace Lopatkin_Glazki
 
 
 
-            if (Sortirovka.SelectedIndex == 0)
+        
+                switch (Sortirovka.SelectedIndex)
                 {
-                    currentGlazki = currentGlazki.OrderBy(p => p.Title).ToList();
+                    case 0:
+                        currentGlazki = currentGlazki.OrderBy(p => p.Title).ToList();
+                        break;
+                    case 1:
+                        currentGlazki = currentGlazki.OrderByDescending(p => p.Title).ToList();
+                        break;
+                    case 4:
+                        currentGlazki = currentGlazki.OrderBy(p => p.Priority).ToList();
+                        break;
+                    case 5:
+                        currentGlazki = currentGlazki.OrderByDescending(p => p.Priority).ToList();
+                        break;
                 }
+            
 
-                if (Sortirovka.SelectedIndex == 4)
-                {
-                    currentGlazki = currentGlazki.OrderBy(p => p.Priority).ToList();
-                }
-
-            if (Sortirovka.SelectedIndex == 1)
+            if (Filtraciya.SelectedIndex >= 0 && Filtraciya.SelectedIndex <= 5)
             {
-                currentGlazki = currentGlazki.OrderByDescending(p => p.Title).ToList();
+                string agentType = GetAgentTypeStringByIndex(Filtraciya.SelectedIndex);
+                currentGlazki = currentGlazki.Where(p => p.AgentTypeString == agentType).ToList();
             }
 
-            if (Sortirovka.SelectedIndex == 5)
-            {
-                currentGlazki = currentGlazki.OrderByDescending(p => p.Priority).ToList();
-            }
-            if (Filtraciya.SelectedIndex == 0)
-                {
-                    currentGlazki = currentGlazki.Where(p => p.AgentTypeString == "МФО").ToList();
-                }
-                if (Filtraciya.SelectedIndex == 1)
-                {
-                    currentGlazki = currentGlazki.Where(p => p.AgentTypeString == "ЗАО").ToList();
-                }
-                if (Filtraciya.SelectedIndex == 2)
-                {
-                    currentGlazki = currentGlazki.Where(p => p.AgentTypeString == "МКК").ToList();
-                }
-                if (Filtraciya.SelectedIndex == 3)
-                {
-                    currentGlazki = currentGlazki.Where(p => p.AgentTypeString == "ОАО").ToList();
-                }
-                if (Filtraciya.SelectedIndex == 4)
-                {
-                    currentGlazki = currentGlazki.Where(p => p.AgentTypeString == "ООО").ToList();
-                }
-                if (Filtraciya.SelectedIndex == 5)
-                {
-                    currentGlazki = currentGlazki.Where(p => p.AgentTypeString == "ПАО").ToList();
-                }
-                GlazkiListView.ItemsSource = currentGlazki;
+            
+            GlazkiListView.ItemsSource = currentGlazki;
             TableList = currentGlazki;
             ChangePage(0, 0);
 
