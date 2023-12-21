@@ -73,6 +73,9 @@
     <Compile Include="AgentType.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="ChangePriorityWindow.xaml.cs">
+      <DependentUpon>ChangePriorityWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Material.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -115,6 +118,10 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Page Include="AddEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChangePriorityWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

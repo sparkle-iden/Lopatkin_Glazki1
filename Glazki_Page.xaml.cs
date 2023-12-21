@@ -236,6 +236,7 @@ namespace Lopatkin_Glazki
 
         private void Redactirovanie_Click(object sender, RoutedEventArgs e)
         {
+            Agent selectedAgent = (sender as Button).DataContext as Agent;
             Manager.MainFrame.Navigate(new AddEditPage((sender as Button).DataContext as Agent));
         }
 
@@ -247,6 +248,41 @@ namespace Lopatkin_Glazki
                 GlazkiListView.ItemsSource = Lopatkin_GlazkiEntities.GetContext().Agent.ToList();
             }
             ObnovlenieStranicy();
+        }
+
+        private void GlazkiListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            PriorityButton.Visibility=Visibility.Visible;
+        }
+
+        private void PriorityButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Получите выделенные элементы из списка агентов
+            var selectedAgents = GlazkiListView.SelectedItems.Cast<Agent>().ToList();
+
+            // Если нет выделенных элементов, выход
+            if (selectedAgents.Count == 0)
+                return;
+
+            // Создайте и отобразите окно изменения приоритета
+            ChangePriorityWindow changePriorityWindow = new ChangePriorityWindow(selectedAgents);
+            if (changePriorityWindow.ShowDialog() == true)
+            {
+                // Обновите приоритеты в базе данных или в вашем списке агентов
+                // changePriorityWindow.NewPriority содержит новый приоритет
+                // selectedAgents содержит список выбранных агентов
+                foreach (var agent in selectedAgents)
+                {
+                    // Обновите приоритет в соответствии с changePriorityWindow.NewPriority
+                    agent.Priority = changePriorityWindow.NewPriority;
+
+                    // Внесите изменения в базу данных (если это требуется)
+                    Lopatkin_GlazkiEntities.GetContext().SaveChanges();
+                }
+
+                // Обновите отображение списка агентов
+                ObnovlenieStranicy();
+            }
         }
     }
 }

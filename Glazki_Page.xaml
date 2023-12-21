@@ -57,7 +57,7 @@
         </StackPanel>
 
  
-        <ListView Name="GlazkiListView" Grid.Row="3">
+        <ListView Name="GlazkiListView" Grid.Row="3" SelectionChanged="GlazkiListView_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -125,5 +125,6 @@
             <Button Name="Right" Content="&gt;" Width="auto" Height="auto"
                     Click="Right_Click"></Button>
         </StackPanel>
+        <Button Content="Изменить приоритет" Height="25" Margin="459,5,166,5" Grid.Row="1" Visibility="Hidden" Name="PriorityButton" Click="PriorityButton_Click"/>
     </Grid>
 </Page>

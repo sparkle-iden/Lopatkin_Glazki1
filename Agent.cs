@@ -37,6 +37,9 @@ namespace Lopatkin_Glazki
     
         public virtual AgentType AgentType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ProductSale ProductCount { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
         public virtual ICollection<AgentPriorityHistory> AgentPriorityHistory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductSale> ProductSale { get; set; }
@@ -49,22 +52,23 @@ namespace Lopatkin_Glazki
                 return AgentType.Title;
            }
         }
-      /*  public int NumberOfsales
-        {
-            get
-            {
-                int coint = 0;
-                var ProductSale = Lopatkin_GlazkiEntities.GetContext().ProductSale.ToList();
-                foreach(var el in ProductSale)
-                {
-                    if (this.ID == el.AgentID)
-                    {
-                        coint += el.ProductCount;
-                    }
-                }
-                return coint;
-            }
-        }*/
+        public virtual ICollection<ProductSale> ProductSales { get; set; }
+        /*  public int NumberOfsales
+          {
+              get
+              {
+                  int coint = 0;
+                  var ProductSale = Lopatkin_GlazkiEntities.GetContext().ProductSale.ToList();
+                  foreach(var el in ProductSale)
+                  {
+                      if (this.ID == el.AgentID)
+                      {
+                          coint += el.ProductCount;
+                      }
+                  }
+                  return coint;
+              }
+          }*/
         public decimal Discount
         {
             get
