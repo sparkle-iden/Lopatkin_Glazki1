@@ -12,6 +12,8 @@ namespace Lopatkin_Glazki
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Windows;
+    using System.Windows.Media;
 
     public partial class Agent
     {
@@ -22,7 +24,8 @@ namespace Lopatkin_Glazki
             this.ProductSale = new HashSet<ProductSale>();
             this.Shop = new HashSet<Shop>();
         }
-    
+
+        public int res;
         public int ID { get; set; }
         public string Title { get; set; }
         public int AgentTypeID { get; set; }
@@ -69,13 +72,14 @@ namespace Lopatkin_Glazki
                   return coint;
               }
           }*/
+     
         public decimal Discount
         {
             get
             {
-                int count=0;
-                decimal res = 0;
-                var discount =Lopatkin_GlazkiEntities.GetContext().Product.ToList();
+
+                decimal count = 0;
+        var discount =Lopatkin_GlazkiEntities.GetContext().Product.ToList();
                 foreach(var el in ProductSale)
                 {
                     if (el.AgentID == ID)
@@ -84,32 +88,48 @@ namespace Lopatkin_Glazki
                         {
                             if (el1.ID == ID)
                             {
-                                res += el1.MinCostForAgent * el.ProductCount;
+                                count += el1.MinCostForAgent * el.ProductCount;
                             }
                         }
                     }
                 }
-                if (res < 10000)
+                if (count < 10000)
                 {
-                    count = 0;
+                    res = 0;
                 }
-                if (res >= 10000&&res<=50000)
+                if (count >= 10000&& count <= 50000)
                 {
-                    count = 5;
+                    res = 5;
                 }
-                if (res >= 50000 && res <= 150000)
+                if (count >= 50000 && count <= 150000)
                 {
-                    count = 10;
+                    res = 10;
                 }
-                if (res >= 150000 && res <= 500000)
+                if (count >= 150000 && count <= 500000)
                 {
-                    count = 20;
+                    res = 20;
                 }
-                if (res >500000)
+                if (count > 500000)
                 {
-                    count = 25;
+                    res = 25;
                 }
-                return count;
+             
+                return res;
+            }
+        }
+        public SolidColorBrush FonStyle
+        {
+            get
+            {
+                if (res >= 25)
+                {
+                    return (SolidColorBrush)new BrushConverter().ConvertFromString("LightGreen");
+                }
+                else
+                {
+                    return (SolidColorBrush)new BrushConverter().ConvertFromString("White");
+
+                }
             }
         }
     }

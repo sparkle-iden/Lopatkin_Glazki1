@@ -25,64 +25,27 @@ namespace Lopatkin_Glazki
         private ProductSale _selectedSale;
         private Agent _currentGlazki = new Agent();
         private List<Product> _availableProducts;
+        public int id;
         List<AgentType> AgentTypesDBList = Lopatkin_GlazkiEntities.GetContext().AgentType.ToList();
         public AddEditPage(Agent selectedGlazki)
         {
             InitializeComponent();
-            LoadProducts();
+           
             if (selectedGlazki != null)
             {
                 _currentGlazki = selectedGlazki;
+                id = _currentGlazki.ID;
                 ComboType.SelectedIndex = _currentGlazki.AgentTypeID - 1;
             }
             DataContext = _currentGlazki;
 
-            LoadSalesData();
+        
         }
 
 
-        private void LoadProducts()
-        {
-            // Получение списка продуктов из базы данных
-            using (var context = new Lopatkin_GlazkiEntities())
-            {
-                _availableProducts = context.Product.ToList();
-            }
+     
 
-            // Установка списка продуктов в качестве источника для ProductComboBox
-            ProductComboBox.ItemsSource = _availableProducts;
-            ProductComboBox.DisplayMemberPath = "Title";
-        }
-
-        private void LoadSalesData()
-        {
-            if (_currentGlazki != null)
-            {
-                using (var context = new Lopatkin_GlazkiEntities())
-                {
-                    // Явная загрузка связанных данных ProductSales
-                    _currentGlazki = context
-                        .Agent
-                        .FirstOrDefault(a => a.ID == _currentGlazki.ID);
-
-                    if (_currentGlazki != null)
-                    {
-                        var productSales = context.ProductSale
-                            .Where(ps => ps.AgentID == _currentGlazki.ID)
-                            .Select(ps => new
-                            {
-                                AgentName = _currentGlazki.Title,
-                                Quantity = ps.ProductCount,
-                                SaleDate = ps.SaleDate
-                            })
-                            .ToList();
-
-                        // Загрузка продаж для текущего агента
-                        SalesDataGrid.ItemsSource = productSales;
-                    }
-                }
-            }
-        }
+       
         private void ChangePictureBtn_Click(object sender, RoutedEventArgs e)
         {
 
@@ -160,111 +123,37 @@ namespace Lopatkin_Glazki
                 }
             }
         }
+
+        private void HisBtn_Click(object sender, RoutedEventArgs e)
+        {
+            History window = new History(_currentGlazki);
+            window.Show();
+        }
+
         private void DeleteBtn_Click(object sender, RoutedEventArgs e)
         {
-            var currentGlazki = (sender as Button).DataContext as Agent;
-            var currentGlazkkiAgent = Lopatkin_GlazkiEntities.GetContext().ProductSale.ToList();
-            currentGlazkkiAgent = currentGlazkkiAgent.Where(p => p.AgentID == currentGlazki.ID).ToList();
-
-            if (currentGlazkkiAgent.Count != 0)
-                MessageBox.Show("Невозможно удалить так как есть продажи");
+            var currentAgent = (sender as Button).DataContext as Agent;
+            var curruntProductSale = Lopatkin_GlazkiEntities.GetContext().ProductSale.ToList();
+            curruntProductSale = curruntProductSale.Where(p => p.AgentID == currentAgent.ID).ToList();
+            if (curruntProductSale.Count != 0)
+            {
+                MessageBox.Show("Невозможно выполнить удаление,так как существует реализация продукции");
+            }
             else
             {
-
-
-                if (MessageBox.Show("Вы точно хотите выполнить удаление?", "Внимание!",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Вы точно хотите выполнить удаление?", "Внимание!", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     try
                     {
-                        Lopatkin_GlazkiEntities.GetContext().Agent.Remove(currentGlazki);
+                        Lopatkin_GlazkiEntities.GetContext().Agent.Remove(currentAgent);
                         Lopatkin_GlazkiEntities.GetContext().SaveChanges();
                         MessageBox.Show("Запись удалена");
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, ToString());
+                        MessageBox.Show(ex.Message.ToString());
                     }
                 }
-            }
-        }
-
-
-        private void AddSale_Click(object sender, RoutedEventArgs e)
-        {
-            if (ProductComboBox.SelectedItem != null)
-            {
-                // Получение выбранного продукта
-                var selectedProduct = (Product)ProductComboBox.SelectedItem;
-
-                // Получение количества
-                if (int.TryParse(QuantityTextBox.Text, out int quantity))
-                {
-                    // Создание новой продажи
-                    var newSale = new ProductSale
-                    {
-                        AgentID = _currentGlazki.ID,
-                        ProductID = selectedProduct.ID,
-                        ProductCount = quantity,
-                        SaleDate = DateTime.Now
-                    };
-
-                    // Сохранение новой продажи в базе данных
-                    using (var context = new Lopatkin_GlazkiEntities())
-                    {
-                        context.ProductSale.Add(newSale);
-                        context.SaveChanges();
-                    }
-
-                    // Обновление отображаемых данных
-                    LoadSalesData();
-                }
-                else
-                {
-                    MessageBox.Show("Введите корректное количество.");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Выберите продукт.");
-            }
-        }
-
-        private void DeleteSale_Click(object sender, RoutedEventArgs e)
-        {
-            if (SalesDataGrid.SelectedItems is ProductSale selectedSale)
-            {
-                if (MessageBox.Show("Вы точно хотите удалить выбранную продажу?", "Внимание!",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    try
-                    {
-                        // Удаление продажи из коллекции текущего агента
-                        _currentGlazki.ProductSales.Remove(selectedSale);
-
-                        // Удаление продажи из базы данных
-                        Lopatkin_GlazkiEntities.GetContext().ProductSale.Remove(selectedSale);
-                        Lopatkin_GlazkiEntities.GetContext().SaveChanges();
-
-                        MessageBox.Show("Продажа удалена");
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Выберите продажу для удаления.");
-            }
-        }
-
-        private void SalesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (SalesDataGrid.SelectedItem is ProductSale selectedSale)
-            {
-                _selectedSale = selectedSale;
             }
         }
     }
