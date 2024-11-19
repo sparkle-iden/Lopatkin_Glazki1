@@ -12,13 +12,15 @@ namespace Lopatkin_Glazki
     using System;
     using System.Collections.Generic;
     
-    public partial class MaterialCountHistory
+    public partial class Ведомость_звонков
     {
-        public int ID { get; set; }
-        public int MaterialID { get; set; }
-        public System.DateTime ChangeDate { get; set; }
-        public double CountValue { get; set; }
+        public int ID_звонка { get; set; }
+        public int ID_абонента { get; set; }
+        public System.DateTime Дата_звонка { get; set; }
+        public System.TimeSpan Время_начала { get; set; }
+        public System.TimeSpan Время_окончания { get; set; }
+        public string Межгород { get; set; }
     
-        public virtual Material Material { get; set; }
+        public virtual Абоненты Абоненты { get; set; }
     }
 }

@@ -12,19 +12,25 @@ namespace Lopatkin_Glazki
     using System;
     using System.Collections.Generic;
     
-    public partial class ProductType
+    public partial class ATS
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ProductType()
+        public ATS()
         {
-            this.Product = new HashSet<Product>();
+            this.Абоненты = new HashSet<Абоненты>();
+            this.Прайс_АТС = new HashSet<Прайс_АТС>();
         }
     
-        public int ID { get; set; }
-        public string Title { get; set; }
-        public double DefectedPercent { get; set; }
+        public int ID_ATS { get; set; }
+        public string Название_АТС { get; set; }
+        public string Вид { get; set; }
+        public string Адрес { get; set; }
+        public string Город { get; set; }
+        public int Количество_абонентов { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> Product { get; set; }
+        public virtual ICollection<Абоненты> Абоненты { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Прайс_АТС> Прайс_АТС { get; set; }
     }
 }

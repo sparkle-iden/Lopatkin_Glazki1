@@ -1,0 +1,88 @@
+﻿<Page x:Class="Lopatkin_Glazki.add_window"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Lopatkin_Glazki"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="add_window">
+
+    <Grid>
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400"></ColumnDefinition>
+            <ColumnDefinition Width="400"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
+            <TextBlock Text="Имя:" FontSize="15" Height="20" MinWidth="120" Width="auto" Margin="5"></TextBlock>
+            <TextBox Text="{Binding Имя}" FontSize="15" Height="20" Width="250"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="3" Orientation="Horizontal">
+            <TextBlock Text="Дата контракта:" FontSize="15" Height="20" MinWidth="120" Width="auto" Margin="5"></TextBlock>
+            <TextBox Text="{Binding End_contract}" FontSize="15" Height="20" Width="250"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+            <TextBlock Text="Фамилия" FontSize="15" Height="20" MinWidth="120" Width="auto" Margin="5"></TextBlock>
+
+            <TextBox Text="{Binding Фамилия}" FontSize="15" Height="20" Width="250"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
+            <TextBlock Text="Отчество" FontSize="15" Height="20" MinWidth="120" Width="auto" Margin="5"></TextBlock>
+            <TextBox Text="{Binding Отчество}" FontSize="15" Height="20" Width="250"></TextBox>
+        </StackPanel>
+       
+
+        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
+            <TextBlock Text="Вид телефона" FontSize="15" Height="20" Width="100" Margin="5"></TextBlock>
+            <ComboBox FontSize="15" Height="25" Width="100" Name="ComboType"  SelectedValue="{Binding Вид_телефона}"
+          SelectedValuePath="Content">
+                <TextBlock >Основной</TextBlock>
+                <TextBlock >Параллельный</TextBlock>
+                <TextBlock >Спаренный</TextBlock>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+            <TextBlock Text="Номер телефона:" FontSize="15" Height="20" Width="120" Margin="5"></TextBlock>
+            <TextBox Text="{Binding Номер_телефона}" FontSize="15" Height="20" Width="100"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+            <TextBlock Text="Дом" FontSize="15" Height="20" Width="100" Margin="5"></TextBlock>
+            <TextBox Text="{Binding Дом}" FontSize="15" Height="20" Width="100"></TextBox>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal">
+            <TextBlock Text="Улица" FontSize="15" Height="20" Width="100" Margin="5"></TextBlock>
+            <TextBox Text="{Binding Улица}" FontSize="15" Height="20" Width="100"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
+            <TextBlock Text="Район" FontSize="15" Height="20" Width="100" Margin="5"></TextBlock>
+
+            <TextBox Text="{Binding Район}" FontSize="15" Height="20" Width="200"></TextBox>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
+            <TextBlock Text="ID ATS" FontSize="15" Height="20" Width="100" Margin="5"></TextBlock>
+            <TextBox Text="{Binding ID_ATS}" FontSize="15" Height="20" Width="200"></TextBox>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="7" Orientation="Horizontal">
+            <Button Content="Cохранить" Name="SaveBtn" Click="SaveBtn_Click"  Margin="5" Visibility="Visible"></Button>
+            <Button Content="Удалить" Name="DeleteBtn" Click="DeleteBtn_Click"  Margin="5"></Button>
+
+        </StackPanel>
+
+    </Grid>
+</Page>

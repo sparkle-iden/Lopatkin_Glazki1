@@ -30,6 +30,8 @@ namespace Lopatkin_Glazki
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
             Manager.MainFrame.GoBack();
+            var parentPage = Manager.MainFrame.Content as Glazki_Page;
+            parentPage?.ObnovlenieStranicy();
         }
 
         private void MainFrame_ContentRendered(object sender, EventArgs e)

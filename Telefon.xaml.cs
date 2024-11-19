@@ -24,14 +24,14 @@ namespace Lopatkin_Glazki
         int CountRecords;
         int CountPage;
         int CurrentPage = 0;
-        List<Agent> CurrentPageList = new List<Agent>();
-        List<Agent> TableList;
+        List<Абоненты> CurrentPageList = new List<Абоненты>();
+        List<Абоненты> TableList;
       
         public Glazki_Page()
         {
             InitializeComponent();
-            var currentGlazki = Lopatkin_GlazkiEntities.GetContext().Agent.ToList();
-            var ProductSale= Lopatkin_GlazkiEntities.GetContext().ProductSale.ToList();
+            var currentGlazki = ATS_LopatkinEntities4.GetContext().Абоненты.ToList();
+
             
            
             ObnovlenieStranicy();
@@ -40,24 +40,24 @@ namespace Lopatkin_Glazki
         {
             switch (index)
             {
-                case 0: return "МФО";
-                case 1: return "ЗАО";
-                case 2: return "МКК";
-                case 3: return "ОАО";
-                case 4: return "ООО";
-                case 5: return "ПАО";
+                case 0: return "Основной";
+                case 1: return "Параллельный";
+                case 2: return "Спаренный";
+               
                 default: return string.Empty;
             }
         }
-        private void ObnovlenieStranicy()
+
+        
+        public void ObnovlenieStranicy()
         {
             
-            var currentGlazki = Lopatkin_GlazkiEntities.GetContext().Agent.ToList();
+            var currentGlazki = ATS_LopatkinEntities4.GetContext().Абоненты.ToList();
 
             currentGlazki = currentGlazki.Where(p =>
-                                                p.Title.ToLower().Contains(TBSearch.Text.ToLower())||
-                                                p.Email.ToLower().Contains(TBSearch.Text.ToLower())||
-                                                p.Phone.ToLower().Replace("+","").Replace("(","").Replace(")","").Replace(" ","").Replace("-","").Contains(TBSearch.Text.ToLower())).ToList();
+                                                p.Имя.ToLower().Contains(TBSearch.Text.ToLower())||
+                                                p.Фамилия.ToLower().Contains(TBSearch.Text.ToLower())||
+                                                p.Номер_телефона.ToLower().Replace("+","").Replace("(","").Replace(")","").Replace(" ","").Replace("-","").Contains(TBSearch.Text.ToLower())).ToList();
 
 
 
@@ -65,27 +65,27 @@ namespace Lopatkin_Glazki
                 switch (Sortirovka.SelectedIndex)
                 {
                     case 0:
-                        currentGlazki = currentGlazki.OrderBy(p => p.Title).ToList();
+                        currentGlazki = currentGlazki.OrderBy(p => p.Имя).ToList();
                         break;
                     case 1:
-                        currentGlazki = currentGlazki.OrderByDescending(p => p.Title).ToList();
+                        currentGlazki = currentGlazki.OrderByDescending(p => p.Имя).ToList();
                         break;
-                    case 4:
-                        currentGlazki = currentGlazki.OrderBy(p => p.Priority).ToList();
+                    case 2:
+                        currentGlazki = currentGlazki.OrderBy(p => p.Фамилия).ToList();
                         break;
-                    case 5:
-                        currentGlazki = currentGlazki.OrderByDescending(p => p.Priority).ToList();
+                    case 3:
+                        currentGlazki = currentGlazki.OrderByDescending(p => p.Фамилия).ToList();
                         break;
                 }
-            
-
             if (Filtraciya.SelectedIndex >= 0 && Filtraciya.SelectedIndex <= 5)
             {
                 string agentType = GetAgentTypeStringByIndex(Filtraciya.SelectedIndex);
-                currentGlazki = currentGlazki.Where(p => p.AgentTypeString == agentType).ToList();
+                currentGlazki = currentGlazki.Where(p => p.Вид_телефона == agentType).ToList();
             }
 
-            
+
+
+
             GlazkiListView.ItemsSource = currentGlazki;
             TableList = currentGlazki;
             ChangePage(0, 0);
@@ -178,7 +178,7 @@ namespace Lopatkin_Glazki
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Manager.MainFrame.Navigate(new AddEditPage(null));
+         
             ObnovlenieStranicy();
         }
 
@@ -216,73 +216,36 @@ namespace Lopatkin_Glazki
         private void Left_Click(object sender, RoutedEventArgs e)
         {
             ChangePage(1, null);
+        
         }
 
         private void Right_Click(object sender, RoutedEventArgs e)
         {
             ChangePage(2, null);
+           
         }
 
         private void PageListBox_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ChangePage(0, Convert.ToInt32(PageListBox.SelectedItem.ToString())-1);
+            
+        }
+
+      
+        private void edit(object sender, RoutedEventArgs e)
+        {
+            Абоненты selectedAgent = (sender as Button).DataContext as Абоненты;
+            Manager.MainFrame.Navigate(new add_window((sender as Button).DataContext as Абоненты));
         }
 
         private void OpenAddEditPage_Click(object sender, RoutedEventArgs e)
         {
-            Manager.MainFrame.Navigate(new AddEditPage(null));
-           
+            Manager.MainFrame.Navigate(new add_window(null));
         }
 
-        private void Redactirovanie_Click(object sender, RoutedEventArgs e)
+        private void GlazkiListView_Loaded(object sender, RoutedEventArgs e)
         {
-            Agent selectedAgent = (sender as Button).DataContext as Agent;
-            Manager.MainFrame.Navigate(new AddEditPage((sender as Button).DataContext as Agent));
-        }
-
-        private void Page_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if(Visibility==Visibility.Visible)
-            {
-                Lopatkin_GlazkiEntities.GetContext().ChangeTracker.Entries().ToList().ForEach(p => p.Reload());
-                GlazkiListView.ItemsSource = Lopatkin_GlazkiEntities.GetContext().Agent.ToList();
-            }
             ObnovlenieStranicy();
-        }
-
-        private void GlazkiListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            PriorityButton.Visibility=Visibility.Visible;
-        }
-
-        private void PriorityButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Получите выделенные элементы из списка агентов
-            var selectedAgents = GlazkiListView.SelectedItems.Cast<Agent>().ToList();
-
-            // Если нет выделенных элементов, выход
-            if (selectedAgents.Count == 0)
-                return;
-
-            // Создайте и отобразите окно изменения приоритета
-            ChangePriorityWindow changePriorityWindow = new ChangePriorityWindow(selectedAgents);
-            if (changePriorityWindow.ShowDialog() == true)
-            {
-                // Обновите приоритеты в базе данных или в вашем списке агентов
-                // changePriorityWindow.NewPriority содержит новый приоритет
-                // selectedAgents содержит список выбранных агентов
-                foreach (var agent in selectedAgents)
-                {
-                    // Обновите приоритет в соответствии с changePriorityWindow.NewPriority
-                    agent.Priority = changePriorityWindow.NewPriority;
-
-                    // Внесите изменения в базу данных (если это требуется)
-                    Lopatkin_GlazkiEntities.GetContext().SaveChanges();
-                }
-
-                // Обновите отображение списка агентов
-                ObnovlenieStranicy();
-            }
         }
     }
 }

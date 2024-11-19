@@ -12,13 +12,13 @@ namespace Lopatkin_Glazki
     using System;
     using System.Collections.Generic;
     
-    public partial class Shop
+    public partial class Прайс_АТС
     {
-        public int ID { get; set; }
-        public string Title { get; set; }
-        public string Address { get; set; }
-        public int AgentID { get; set; }
+        public int ID_прайса { get; set; }
+        public int ID_ATS { get; set; }
+        public decimal Цена_на_городские { get; set; }
+        public decimal Цена_на_межгород { get; set; }
     
-        public virtual Agent Agent { get; set; }
+        public virtual ATS ATS { get; set; }
     }
 }
